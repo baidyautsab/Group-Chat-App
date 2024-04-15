@@ -18,11 +18,11 @@ public class Server {
         System.out.println("Server is started!");
         ServerSocket serverSocket = null;
         try {
-            serverSocket = new ServerSocket(7777); // assigning the port no.
+            serverSocket = new ServerSocket(7777); // creating serverSocket object
             System.out.println("Server is ready to connect");
 
             // Start a thread to read messages from the server console
-            ConsoleReader consoleReader = new ConsoleReader(); // to read the data from server console
+            ConsoleReader consoleReader = new ConsoleReader(); // to read the data from console
             Thread consoleReaderThread = new Thread(consoleReader); // converting the object as a thread object
             consoleReaderThread.start();
 
@@ -34,7 +34,7 @@ public class Server {
                 clientNames.put(clientId, clientName); // adding the client with their name
                 System.out.println("Connection established with client: " + clientName);
                 PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
-                clientMap.put(clientId, out); // adding the client with id and name(or we can say current message sender)
+                clientMap.put(clientId, out); // adding the client with id
                 ClientHandler clientHandler = new ClientHandler(socket, clientId++, consoleReader);
                 clientHandler.start();
             }
@@ -107,7 +107,7 @@ public class Server {
             }
         }
 
-        // Method to broadcast a message to all clients except the sender
+        // Method to broadcast a message to all clients
         public void broadcast(String message) {
             for (PrintWriter clientOut : clientMap.values()) {
                 clientOut.println(message);
